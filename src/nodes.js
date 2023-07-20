@@ -2,7 +2,7 @@ const initialNodes = [
     {
       id: "1",
       position: { x: 0, y: 0 },
-      data: { label: "Node-1" },
+      data: { label: "Node-1" , cost: "100000"},
       style: { backgroundColor: "red", color: "white" },
     },
     {

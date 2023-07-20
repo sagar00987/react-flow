@@ -53,3 +53,34 @@
     color: lightgray;
    
 }
+
+.panelLabel{
+    margin: 15px 0px;
+    font-weight: bold;
+
+}
+
+.nodeName,.nodeType ,.nodeCost{
+    height: 30px;
+    width: 80%;
+}
+
+.panelForm{
+    padding: 40px 0px;
+    margin-top: 20px;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.panelForm h2{
+    margin: 0px;
+}
+
+.submitButton{
+    margin-top: 20px;
+    padding: 8px 17px;
+    background: white;
+    font-weight: 600;
+    border: 1px solid lightgray;
+    
+}

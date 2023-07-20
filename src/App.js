@@ -11,7 +11,7 @@ import {
   useEdgesState,
   addEdge,
 } from "reactflow";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState} from "react";
 import "reactflow/dist/style.css";
 import TextUpdaterNode from "./TextUpdaterNode";
 import "./TextUpdaterNode.css";
@@ -40,7 +40,7 @@ function App() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [captureElementClick, setCaptureElementClick] = useState(true);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [nodeData, setNodeData] = useState();
+  const [nodeData, setNodeData] = useState({});
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -48,9 +48,15 @@ function App() {
   );
 
   const onNodeClick = (event, node) => {
-    console.log("Node Clicked", node);
+    console.log("Node Clicked", node.data);
     setIsPanelOpen(true);
-    setNodeData(node.data.label);
+    setNodeData(node.data);
+  };
+
+   const reactFlowStyle = {
+    background: 'lightgray',
+    width: '100%',
+    height: 300,
   };
 
   console.log("Clicked node data", nodeData);
@@ -68,6 +74,7 @@ function App() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        style={reactFlowStyle}
         onNodeClick={captureElementClick ? onNodeClick : undefined}
         fitView
       >
