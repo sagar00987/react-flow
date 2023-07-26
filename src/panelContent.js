@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 function PanelContent(props) {
   console.log("PROPS - ", props);
 
-  const [nodeName, setNodeName] = useState();
 
-  useEffect(() => {
-    setNodeName(props.data.label);
-    console.log("Node Name -----------", nodeName);
+  const [formData, setFormData] = useState({
+    nodeName: props.data.label || '',
+    nodeType: 'Type-a',
+    nodeCost: 0,
   });
+
+  const resetForm = () => {
+    setFormData({
+      nodeName: props.data.label || '',
+      nodeType: 'Type-a',
+      nodeCost: 0,
+    });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("FORM DATA", event.target[0].value);
-    console.log(event.target[1].value);
-    console.log(event.target[2].value);
-    setNodeName(event.target[0].value);
-    
+    console.log("From FORM DATA", "node name:", formData.nodeName, ",node type :", formData.nodeType, ",node cost:", formData.nodeCost);
+    resetForm();
   };
 
   const renderWriteForm = () => {
@@ -32,14 +37,18 @@ function PanelContent(props) {
               type="text"
               placeholder={props.data.label}
               className="nodeName"
-              // value={FormData.nodeName}
+              value={FormData.nodeName}
+              onChange={(e) => setFormData({ ...formData, nodeName: e.target.value })}
             />
           </div>
           <div className="panelLabel">
             <label>Select the Node type</label>
           </div>
           <div>
-            <select className="nodeType">
+            <select className="nodeType"
+              value={formData.nodeType}
+              onChange={(e) => setFormData({ ...formData, nodeType: e.target.value })}
+            >
               <option value="Type-a">Type a</option>
               <option value="Type-b">Type b</option>
               <option value="Type-c">Type c</option>
@@ -49,7 +58,10 @@ function PanelContent(props) {
             <label>Enter the cost</label>
           </div>
           <div>
-            <input type="number" className="nodeCost" />
+            <input type="number" className="nodeCost"
+              value={formData.nodeCost}
+              onChange={(e) => setFormData({ ...formData, nodeCost: e.target.value })}
+            />
           </div>
           <button type="submit" className="submitButton" onClick={handleSubmit}>
             Submit
@@ -72,7 +84,7 @@ function PanelContent(props) {
               type="text"
               placeholder={props.data.label}
               className="nodeName"
-              // value={FormData.nodeName}
+            // value={FormData.nodeName}
             />
           </div>
           <div className="panelLabel">
@@ -112,7 +124,7 @@ function PanelContent(props) {
               type="text"
               placeholder={props.data.label}
               className="nodeName"
-              // value={FormData.nodeName}
+            // value={FormData.nodeName}
             />
           </div>
           <div className="panelLabel">
@@ -141,7 +153,7 @@ function PanelContent(props) {
 
   return (
     <div className="panelContainer">
-      <div className="panelHeader">{nodeName}</div>
+      <div className="panelHeader">{props.data.label}</div>
       <div className="panelOptions">
         <div className="panelNodeActions">Node Actions</div>
         <div className="panelProperties">Properties</div>
@@ -156,8 +168,8 @@ function PanelContent(props) {
           {props.type == "write"
             ? renderWriteForm()
             : props.type == "read"
-            ? renderReadForm()
-            : renderSQLForm()}
+              ? renderReadForm()
+              : renderSQLForm()}
         </div>
       </div>
     </div>
