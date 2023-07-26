@@ -41,6 +41,7 @@ function App() {
   const [captureElementClick, setCaptureElementClick] = useState(true);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [nodeData, setNodeData] = useState({});
+  const [nodeType, setNodeType] = useState('');
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -51,6 +52,7 @@ function App() {
     console.log("Node Clicked", node.data);
     setIsPanelOpen(true);
     setNodeData(node.data);
+    setNodeType(node.node_type);
   };
 
    const reactFlowStyle = {
@@ -87,7 +89,7 @@ function App() {
           position="top-right"
         >
           <div>
-            <PanelContent data={nodeData} />
+            <PanelContent data={nodeData} type={nodeType} />
           </div>
           <button
             className="panelCancelButton"
