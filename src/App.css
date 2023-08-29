@@ -60,3 +60,15 @@ body,
   font-weight: 600;
   border: 1px solid lightgray;
 }
+
+.btn-add{
+  display: flex;
+    position: absolute;
+    top: 20%;
+    left: 5%;
+    width: 105px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    font-weight: bolder;
+}

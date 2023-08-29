@@ -10,8 +10,11 @@ import {
   useNodesState,
   useEdgesState,
   addEdge,
+  useReactFlow,
+  ReactFlowProvider
+
 } from "reactflow";
-import React, { useCallback, useState} from "react";
+import React, { useCallback, useState } from "react";
 import "reactflow/dist/style.css";
 import TextUpdaterNode from "./TextUpdaterNode";
 import "./TextUpdaterNode.css";
@@ -35,7 +38,27 @@ const nodeColor = (node) => {
   }
 };
 
+let nodeId = 0;
+
 function App() {
+
+  const reactFlowInstance = useReactFlow();
+  const onClick = useCallback(() => {
+    const id = `${++nodeId}`;
+    const newNode = {
+      id,
+      position: {
+        x: Math.random() * 500,
+        y: Math.random() * 500,
+      },
+      data: {
+        label: `Node ${id}`,
+      },
+    };
+    reactFlowInstance.addNodes(newNode);
+  }, []);
+
+
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [captureElementClick, setCaptureElementClick] = useState(true);
@@ -55,7 +78,7 @@ function App() {
     setNodeType(node.node_type);
   };
 
-   const reactFlowStyle = {
+  const reactFlowStyle = {
     background: 'lightgray',
     width: '100%',
     height: 300,
@@ -69,44 +92,56 @@ function App() {
         <div className="breadcrumb"></div>
       </div>
       <div style={{ width: "100%", height: "100vh" }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        nodeTypes={nodeTypes}
-        style={reactFlowStyle}
-        onNodeClick={captureElementClick ? onNodeClick : undefined}
-        fitView
-      >
-        <Controls />
-        <NodeResizer />
-        <MiniMap nodeColor={nodeColor} zoomable pannable />
-
-        <Panel
-          className={isPanelOpen ? "panelOpen" : "panelClose"}
-          position="top-right"
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          nodeTypes={nodeTypes}
+          style={reactFlowStyle}
+          onNodeClick={captureElementClick ? onNodeClick : undefined}
+          fitView
         >
-          <div>
-            <PanelContent data={nodeData} type={nodeType} />
-          </div>
-          <button
-            className="panelCancelButton"
-            onClick={() => setIsPanelOpen(false)}
-          >
-            Cancel
-          </button>
-        </Panel>
-        <Panel className="menuPanel" position="top-left"></Panel>
+          
+          <Controls />
+          <NodeResizer />
+          <MiniMap nodeColor={nodeColor} zoomable pannable />
 
-        <NodeToolbar />
-        <Background variant="blank" />
-      </ReactFlow>
+          <Panel
+            className={isPanelOpen ? "panelOpen" : "panelClose"}
+            position="top-right"
+          >
+            <div>
+              <PanelContent data={nodeData} type={nodeType} />
+            </div>
+            <button
+              className="panelCancelButton"
+              onClick={() => setIsPanelOpen(false)}
+            >
+              Cancel
+            </button>
+          </Panel>
+          <Panel className="menuPanel" position="top-left"></Panel>
+
+          <NodeToolbar />
+          <Background variant="blank" />
+        </ReactFlow>
+        <button onClick={onClick} className="btn-add">
+            add node
+          </button>
+       
+        
+      </div>
     </div>
-    </div>
-    
+
   );
 }
 
-export default App;
+export default function Flow() {
+  return (
+    <ReactFlowProvider>
+      <App />
+    </ReactFlowProvider>
+  );
+}
